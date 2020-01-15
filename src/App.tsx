@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
-import {BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import ChartCard from './components/ChartCard';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const store = createStore();
 const theme = createMuiTheme({
@@ -37,7 +38,9 @@ const App = () => (
             <NowWhat />
           </Route>
 
-          <Route path='/charts' exact><h1>Hello World</h1></Route>
+          <Route path='/charts' exact>
+            <ChartCard />
+          </Route>
         </Switch>
         <ToastContainer />
       </Wrapper>
