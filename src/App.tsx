@@ -68,8 +68,7 @@ const client = new ApolloClient({
 
 client.query({
   query: gql`
-  {getMetrics}
-  `
+  query{getMetrics}`
 })
 .then((res) => console.log(res))
 .catch(err => console.log(err))
