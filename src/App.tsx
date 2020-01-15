@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
 import ChartCard from './components/ChartCard';
+import ChartMenu from './components/ChartMenu';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const store = createStore();
@@ -39,6 +40,7 @@ const App = () => (
           </Route>
 
           <Route path='/charts' exact>
+            <ChartMenu />
             <ChartCard />
           </Route>
         </Switch>
