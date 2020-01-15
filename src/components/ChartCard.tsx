@@ -23,6 +23,7 @@ export default (props) => {
     <div className={classes.root}>
       <Paper>
         <h1>{props.chartType}</h1>
+            {props.children}
       </Paper>
     </div>
   );
