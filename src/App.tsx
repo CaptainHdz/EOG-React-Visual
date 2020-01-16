@@ -41,7 +41,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://react.eogresources.com/graphql`,
+  uri: `wss://react.eogresources.com/graphql`,
   options: {
     reconnect: true
   }
@@ -65,13 +65,20 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+const GET_MEASUREMENTS = gql`subscription{newMeasurement{
+  metric,
+  value,
+  at
+}
+}`;
 
-client.query({
-  query: gql`
-  query{getMetrics}`
+
+client.subscribe({
+  query: GET_MEASUREMENTS
 })
-.then((res) => console.log(res))
-.catch(err => console.log(err))
+.subscribe({next(data){console.log(data)},
+error(err){console.log(err)}})
+// .catch(err => console.log(err));
 
 class App extends Component{
   constructor(props) {
