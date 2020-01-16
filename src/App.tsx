@@ -12,6 +12,7 @@ import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import ChartMenu from './components/ChartMenu';
 import { gql } from 'apollo-boost';
+
 import {Subscription} from '@apollo/react-components';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -52,6 +53,7 @@ class App extends Component<AppProps, AppState> {
 
    chartData = [] as any;
    currentTemp = '';
+
 
   
 render() {
@@ -102,6 +104,7 @@ render() {
                       </div>
                     )
                     }}
+
                 </Subscription>
               </ChartCard>
             </Route>

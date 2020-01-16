@@ -40,6 +40,7 @@ export default () => {
         <MenuItem onClick={handleClose}>Oil Temp</MenuItem>
         <MenuItem onClick={handleClose}>Water Temp</MenuItem>
         <MenuItem onClick={handleClose}>Casing Pressure</MenuItem>
+
       </Menu>
     </div>
   );
