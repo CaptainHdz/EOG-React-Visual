@@ -43,6 +43,7 @@ let chartData = [] as any;
 class App extends Component {
   
 render() {
+
     return (
     <Router>
     <MuiThemeProvider theme={theme}>
@@ -72,18 +73,19 @@ render() {
                         y: data.newMeasurement.value
                       };
                       if (chartData.length > 100) {
-                        chartData.shift()
+                        chartData.shift();
                       }
                       chartData.push(dataLog);
-                      // console.log(chartData.length)
+                      console.log(chartData.length)
+                      console.log(dataLog)
                     };
 
                     return (
                       <div>
-                      <LineChart width={1000} height={500} data={chartData}>
+                      <LineChart width={1000} height={500} data={chartData.length > 2? chartData : []}>
                         <Line type="monotone" dataKey="y" stroke="#8884d8" />
                         <XAxis  />
-                        <YAxis />
+                        <YAxis dataKey="y" />
                         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                         <Tooltip />
                       </LineChart>
