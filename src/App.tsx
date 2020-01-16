@@ -8,10 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
+import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import ChartMenu from './components/ChartMenu';
 import { gql } from 'apollo-boost';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import {Subscription} from '@apollo/react-components';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -38,9 +38,21 @@ const GET_MEASUREMENTS = gql`subscription{newMeasurement{
 }
 }`;
 
-let chartData = [] as any;
+interface AppProps {
+  //code related to your props goes here
+}
 
-class App extends Component {
+
+interface AppState {
+  chartArray: any,
+}
+
+
+class App extends Component<AppProps, AppState> {
+
+   chartData = [] as any;
+   currentTemp = '';
+
   
 render() {
 
@@ -72,25 +84,24 @@ render() {
                         x: data.newMeasurement.at,
                         y: data.newMeasurement.value
                       };
-                      if (chartData.length > 100) {
-                        chartData.shift();
+                      if (this.chartData.length > 100) {
+                        this.chartData.shift();
                       }
-                      chartData.push(dataLog);
-                      console.log(chartData.length)
-                      console.log(dataLog)
+                      
+                      this.currentTemp = dataLog.y;
+                      this.chartData.push(dataLog);
+                      console.log(this.chartData.length);
+                      console.log(dataLog);
                     };
+                    
 
                     return (
                       <div>
-                      <LineChart width={1000} height={500} data={chartData.length > 2? chartData : []}>
-                        <Line type="monotone" dataKey="y" stroke="#8884d8" />
-                        <XAxis  />
-                        <YAxis dataKey="y" />
-                        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                        <Tooltip />
-                      </LineChart>
+                      <h4>Current Temp:{this.currentTemp}</h4>
+                      <Chart chartArray={this.chartData.length > 4? this.chartData : []} dataKey="y" />                        
                       </div>
-                    )}}
+                    )
+                    }}
                 </Subscription>
               </ChartCard>
             </Route>
