@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 })
 
 
-export default () => {
+export default (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -37,9 +37,9 @@ export default () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Oil Temp</MenuItem>
-        <MenuItem onClick={handleClose}>Water Temp</MenuItem>
-        <MenuItem onClick={handleClose}>Casing Pressure</MenuItem>
+        <MenuItem id='oil' onClick={() => props.clickMenu()}>Oil Temp</MenuItem>
+        <MenuItem id='water' onClick={props.not}>Water Temp</MenuItem>
+        <MenuItem id='casing pressure' onClick={props.not}>Casing Pressure</MenuItem>
 
       </Menu>
     </div>

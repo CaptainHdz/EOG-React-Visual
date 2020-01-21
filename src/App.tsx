@@ -30,7 +30,7 @@ const theme = createMuiTheme({
     },
   },
 });
-
+//APOLLO Query
 const GET_MEASUREMENTS = gql`subscription{newMeasurement{
   metric,
   value,
@@ -48,12 +48,66 @@ interface AppState {
   chartArray: any,
 }
 
+const chartData = [] as any;
+const flareTempData = [] as any;
+const oilTempData = [] as any;
+const waterTempData = [] as any;
+
+
+let currentTemp = '';
+
 
 class App extends Component<AppProps, AppState> {
 
-   chartData = [] as any;
-   currentTemp = '';
 
+   clickMenu = () => {
+    console.log('Hello')
+   };
+
+   dataSort = (data) => {
+    if (data.newMeasurement.metric === 'flareTemp') {
+      const dataLog = {
+        x: data.newMeasurement.at,
+        y: data.newMeasurement.value
+      };
+      if (chartData.length > 100) {
+        chartData.shift();
+      }
+      
+      // currentTemp = dataLog.y;
+      flareTempData.push(dataLog);
+      console.log('flareTemp ',dataLog);
+    };
+
+    if (data.newMeasurement.metric === 'waterTemp') {
+      const dataLog = {
+        x: data.newMeasurement.at,
+        y: data.newMeasurement.value
+      };
+      if (chartData.length > 100) {
+        chartData.shift();
+      }
+      
+      // currentTemp = dataLog.y;
+      flareTempData.push(dataLog);
+      console.log('waterTemp ',dataLog);
+    };
+
+    if (data.newMeasurement.metric === 'oilTemp') {
+      const dataLog = {
+        x: data.newMeasurement.at,
+        y: data.newMeasurement.value
+      };
+      if (chartData.length > 100) {
+        chartData.shift();
+      }
+      
+      // currentTemp = dataLog.y;
+      flareTempData.push(dataLog);
+      console.log('oilTemp ',dataLog);
+    };
+   }
+  
 
   
 render() {
@@ -71,7 +125,7 @@ render() {
             </Route>
   
             <Route path='/charts' exact>
-              <ChartMenu />
+              <ChartMenu clickMenu={this.clickMenu} />
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
                   {({data, error, loading}) => {
@@ -81,26 +135,28 @@ render() {
 
                     if (error) {console.log('We have an issue sir:', error)}
 
-                    if (data.newMeasurement.metric === 'waterTemp') {
-                      const dataLog = {
-                        x: data.newMeasurement.at,
-                        y: data.newMeasurement.value
-                      };
-                      if (this.chartData.length > 100) {
-                        this.chartData.shift();
-                      }
+
+                    // if (data.newMeasurement.metric === 'flareTemp') {
+                    //   const dataLog = {
+                    //     x: data.newMeasurement.at,
+                    //     y: data.newMeasurement.value
+                    //   };
+                    //   if (chartData.length > 100) {
+                    //     chartData.shift();
+                    //   }
                       
-                      this.currentTemp = dataLog.y;
-                      this.chartData.push(dataLog);
-                      console.log(this.chartData.length);
-                      console.log(dataLog);
-                    };
+                    //   // currentTemp = dataLog.y;
+                    //   flareTempData.push(dataLog);
+                    //   console.log('flareTemp ',dataLog);
+                    // };
+
+                    this.dataSort(data)
                     
 
                     return (
                       <div>
-                      <h4>Current Temp:{this.currentTemp}</h4>
-                      <Chart chartArray={this.chartData.length > 4? this.chartData : []} dataKey="y" />                        
+                      <h4>Current Temp:{currentTemp}</h4>
+                      <Chart chartArray={chartData.length > 4? chartData : []} dataKey="y" />                        
                       </div>
                     )
                     }}
