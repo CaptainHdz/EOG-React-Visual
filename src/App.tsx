@@ -10,6 +10,7 @@ import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
 import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
+import GraphChip from './components/GraphChip';
 import ChartMenu from './components/ChartMenu';
 import { gql } from 'apollo-boost';
 
@@ -48,7 +49,7 @@ interface AppState {
   chartArray: any,
 }
 
-const chartData = [] as any;
+let chartData = [] as any;
 const flareTempData = [] as any;
 const oilTempData = [] as any;
 const waterTempData = [] as any;
@@ -89,7 +90,7 @@ class App extends Component<AppProps, AppState> {
       }
       
       // currentTemp = dataLog.y;
-      flareTempData.push(dataLog);
+      waterTempData.push(dataLog);
       console.log('waterTemp ',dataLog);
     };
 
@@ -103,10 +104,24 @@ class App extends Component<AppProps, AppState> {
       }
       
       // currentTemp = dataLog.y;
-      flareTempData.push(dataLog);
+      oilTempData.push(dataLog);
       console.log('oilTemp ',dataLog);
     };
-   }
+   };
+
+   handleFlareClick = () => {
+     console.log('flare clicked')
+     chartData = flareTempData;
+
+   };
+
+   handleWaterClick = () => {
+     console.log('water clicked')
+   };
+
+   handleOilClick = () => {
+    console.log('oil clicked')
+  };
   
 
   
@@ -125,7 +140,9 @@ render() {
             </Route>
   
             <Route path='/charts' exact>
-              <ChartMenu clickMenu={this.clickMenu} />
+              <GraphChip name='Flare Temp' handleChipClick={this.handleFlareClick} />
+              <GraphChip name='Water Temp' handleChipClick={this.handleWaterClick} />
+              <GraphChip name='Oil Temp' handleChipClick={this.handleOilClick} />
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
                   {({data, error, loading}) => {
@@ -156,7 +173,7 @@ render() {
                     return (
                       <div>
                       <h4>Current Temp:{currentTemp}</h4>
-                      <Chart chartArray={chartData.length > 4? chartData : []} dataKey="y" />                        
+                      <Chart chartArray={chartData.length > 3? chartData : []} dataKey="y" />                        
                       </div>
                     )
                     }}
