@@ -11,7 +11,6 @@ import NowWhat from './components/NowWhat';
 import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import GraphChip from './components/GraphChip';
-import ChartMenu from './components/ChartMenu';
 import { gql } from 'apollo-boost';
 
 import {Subscription} from '@apollo/react-components';
@@ -59,11 +58,6 @@ let currentTemp = '';
 
 
 class App extends Component<AppProps, AppState> {
-
-
-   clickMenu = () => {
-    console.log('Hello')
-   };
 
    dataSort = (data) => {
     if (data.newMeasurement.metric === 'flareTemp') {
@@ -117,10 +111,12 @@ class App extends Component<AppProps, AppState> {
 
    handleWaterClick = () => {
      console.log('water clicked')
+     chartData = waterTempData;
    };
 
    handleOilClick = () => {
     console.log('oil clicked')
+    chartData = oilTempData;
   };
   
 
@@ -152,24 +148,8 @@ render() {
 
                     if (error) {console.log('We have an issue sir:', error)}
 
-
-                    // if (data.newMeasurement.metric === 'flareTemp') {
-                    //   const dataLog = {
-                    //     x: data.newMeasurement.at,
-                    //     y: data.newMeasurement.value
-                    //   };
-                    //   if (chartData.length > 100) {
-                    //     chartData.shift();
-                    //   }
-                      
-                    //   // currentTemp = dataLog.y;
-                    //   flareTempData.push(dataLog);
-                    //   console.log('flareTemp ',dataLog);
-                    // };
-
-                    this.dataSort(data)
+                    this.dataSort(data);
                     
-
                     return (
                       <div>
                       <h4>Current Temp:{currentTemp}</h4>
