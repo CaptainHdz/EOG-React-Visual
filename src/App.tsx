@@ -11,7 +11,6 @@ import NowWhat from './components/NowWhat';
 import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import GraphChip from './components/GraphChip';
-import ChartMenu from './components/ChartMenu';
 import { gql } from 'apollo-boost';
 
 import {Subscription} from '@apollo/react-components';
@@ -46,38 +45,40 @@ interface AppProps {
 
 
 interface AppState {
-  chartArray: any,
+  chartData: Array<object>
 }
 
-let chartData = [] as any;
+// let chartData = [] as any;
 const flareTempData = [] as any;
 const oilTempData = [] as any;
 const waterTempData = [] as any;
 
 
 let currentTemp = '';
+let flareTemp = '';
+let waterTemp = '';
+let oilTemp = '';
 
 
 class App extends Component<AppProps, AppState> {
 
-
-   clickMenu = () => {
-    console.log('Hello')
-   };
+  state = {
+    chartData: [] as any
+  }
 
    dataSort = (data) => {
+     if (this.state.chartData.length > 100) {this.state.chartData.shift()}
+
     if (data.newMeasurement.metric === 'flareTemp') {
       const dataLog = {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (flareTempData.length > 100) {flareTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      flareTemp = dataLog.y;
       flareTempData.push(dataLog);
-      console.log('flareTemp ',dataLog);
+      console.log('flareTemp ', dataLog);
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
@@ -85,13 +86,11 @@ class App extends Component<AppProps, AppState> {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (waterTempData.length > 100) {waterTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      waterTemp = dataLog.y;
       waterTempData.push(dataLog);
-      console.log('waterTemp ',dataLog);
+      console.log('waterTemp ', dataLog);
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
@@ -99,28 +98,30 @@ class App extends Component<AppProps, AppState> {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (oilTempData.length > 100) {oilTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      oilTemp = dataLog.y;
       oilTempData.push(dataLog);
-      console.log('oilTemp ',dataLog);
+      console.log('oilTemp ', dataLog);
     };
    };
 
    handleFlareClick = () => {
-     console.log('flare clicked')
-     chartData = flareTempData;
+    this.setState({chartData: flareTempData})
+     currentTemp = flareTemp;
 
    };
 
    handleWaterClick = () => {
-     console.log('water clicked')
+    this.setState({chartData: waterTempData})
+     currentTemp = waterTemp;
+
    };
 
    handleOilClick = () => {
-    console.log('oil clicked')
+    this.setState({chartData: oilTempData})
+    currentTemp = oilTemp;
+
   };
   
 
@@ -152,32 +153,15 @@ render() {
 
                     if (error) {console.log('We have an issue sir:', error)}
 
-
-                    // if (data.newMeasurement.metric === 'flareTemp') {
-                    //   const dataLog = {
-                    //     x: data.newMeasurement.at,
-                    //     y: data.newMeasurement.value
-                    //   };
-                    //   if (chartData.length > 100) {
-                    //     chartData.shift();
-                    //   }
-                      
-                    //   // currentTemp = dataLog.y;
-                    //   flareTempData.push(dataLog);
-                    //   console.log('flareTemp ',dataLog);
-                    // };
-
-                    this.dataSort(data)
+                    this.dataSort(data);
                     
-
                     return (
                       <div>
                       <h4>Current Temp:{currentTemp}</h4>
-                      <Chart chartArray={chartData.length > 3? chartData : []} dataKey="y" />                        
+                      <Chart chartArray={this.state.chartData.length > 3? this.state.chartData : []} dataKey="y" />                        
                       </div>
                     )
                     }}
-
                 </Subscription>
               </ChartCard>
             </Route>
