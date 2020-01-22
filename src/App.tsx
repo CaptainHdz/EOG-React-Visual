@@ -63,7 +63,7 @@ let oilTemp = '';
 class App extends Component<AppProps, AppState> {
 
   state = {
-    chartData: []
+    chartData: [] as any
   }
 
    dataSort = (data) => {
@@ -107,23 +107,20 @@ class App extends Component<AppProps, AppState> {
    };
 
    handleFlareClick = () => {
-    //  chartData = flareTempData;
     this.setState({chartData: flareTempData})
-    //  currentTemp = this.state.chartData[this.state.chartData.length-1].y
+     currentTemp = flareTemp;
 
    };
 
    handleWaterClick = () => {
-    //  chartData = waterTempData;
     this.setState({chartData: waterTempData})
-    //  currentTemp = this.state.chartData[this.state.chartData.length-1].y
+     currentTemp = waterTemp;
 
    };
 
    handleOilClick = () => {
-    // chartData = oilTempData;
     this.setState({chartData: oilTempData})
-    // currentTemp = this.state.chartData[this.state.chartData.length-1].y
+    currentTemp = oilTemp;
 
   };
   
