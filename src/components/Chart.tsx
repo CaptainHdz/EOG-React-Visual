@@ -11,6 +11,12 @@ export default (props) => {
                 <Tooltip />
                 <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                 <Line  type="monotone" dataKey="y" stroke="#8884d8" isAnimationActive={false} />
+                <Line  type="monotone" dataKey="y" stroke="#82ca9d" isAnimationActive={false} />
+                <Line  type="monotone" dataKey="y" stroke="#f2a353" isAnimationActive={false} />
+                <Line  type="monotone" dataKey="y" stroke="#7ce348" isAnimationActive={false} />
+                <Line  type="monotone" dataKey="y" stroke="#f42b3f" isAnimationActive={false} />
+                <Line  type="monotone" dataKey="y" stroke="#311eff" isAnimationActive={false} />
+
             </LineChart>
         </div>
     )

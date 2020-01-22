@@ -48,7 +48,6 @@ interface AppState {
   chartData: Array<object>
 }
 
-// let chartData = [] as any;
 const flareTempData = [] as any;
 const oilTempData = [] as any;
 const waterTempData = [] as any;
@@ -67,42 +66,64 @@ class App extends Component<AppProps, AppState> {
   }
 
    dataSort = (data) => {
-     if (this.state.chartData.length > 100) {this.state.chartData.shift()}
+    if (this.state.chartData.length > 100) {this.state.chartData.shift()}
+
+    const dataLogs = {
+      IVO: '',
+      CP: '',
+      TP: '',
+      FT: '',
+      WT: '',
+      OT: ''
+    };
+
+    if (data.newMeasurement.metric === 'injValveOpen') {
+      console.log('IVO ', data.newMeasurement.value)
+    }
+
+
+    if (data.newMeasurement.metric === 'casingPressure') {
+      console.log('casingPressure ', data.newMeasurement.value)
+    }
+
+    if (data.newMeasurement.metric === 'tubingPressure') {
+      console.log('tubingPressure', data.newMeasurement.value)
+    }
 
     if (data.newMeasurement.metric === 'flareTemp') {
-      const dataLog = {
-        x: data.newMeasurement.at,
-        y: data.newMeasurement.value
-      };
-      if (flareTempData.length > 100) {flareTempData.shift();}
+      // const dataLog = {
+      //   x: data.newMeasurement.at,
+      //   y: data.newMeasurement.value
+      // };
+      // if (flareTempData.length > 100) {flareTempData.shift();}
       
-      flareTemp = dataLog.y;
-      flareTempData.push(dataLog);
-      console.log('flareTemp ', dataLog);
+      // flareTemp = dataLog.y;
+      // flareTempData.push(dataLog);
+      console.log('flareTemp ', data.newMeasurement.value);
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
-      const dataLog = {
-        x: data.newMeasurement.at,
-        y: data.newMeasurement.value
-      };
-      if (waterTempData.length > 100) {waterTempData.shift();}
+      // const dataLog = {
+      //   x: data.newMeasurement.at,
+      //   y: data.newMeasurement.value
+      // };
+      // if (waterTempData.length > 100) {waterTempData.shift();}
       
-      waterTemp = dataLog.y;
-      waterTempData.push(dataLog);
-      console.log('waterTemp ', dataLog);
+      // waterTemp = dataLog.y;
+      // waterTempData.push(dataLog);
+      console.log('waterTemp ', data.newMeasurement.value);
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
-      const dataLog = {
-        x: data.newMeasurement.at,
-        y: data.newMeasurement.value
-      };
-      if (oilTempData.length > 100) {oilTempData.shift();}
+      // const dataLog = {
+      //   x: data.newMeasurement.at,
+      //   y: data.newMeasurement.value
+      // };
+      // if (oilTempData.length > 100) {oilTempData.shift();}
       
-      oilTemp = dataLog.y;
-      oilTempData.push(dataLog);
-      console.log('oilTemp ', dataLog);
+      // oilTemp = dataLog.y;
+      // oilTempData.push(dataLog);
+      console.log('oilTemp ', data.newMeasurement.value);
     };
    };
 
