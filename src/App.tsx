@@ -45,33 +45,40 @@ interface AppProps {
 
 
 interface AppState {
-  chartArray: any,
+  chartData: Array<object>
 }
 
-let chartData = [] as any;
+// let chartData = [] as any;
 const flareTempData = [] as any;
 const oilTempData = [] as any;
 const waterTempData = [] as any;
 
 
 let currentTemp = '';
+let flareTemp = '';
+let waterTemp = '';
+let oilTemp = '';
 
 
 class App extends Component<AppProps, AppState> {
 
+  state = {
+    chartData: []
+  }
+
    dataSort = (data) => {
+     if (this.state.chartData.length > 100) {this.state.chartData.shift()}
+
     if (data.newMeasurement.metric === 'flareTemp') {
       const dataLog = {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (flareTempData.length > 100) {flareTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      flareTemp = dataLog.y;
       flareTempData.push(dataLog);
-      console.log('flareTemp ',dataLog);
+      console.log('flareTemp ', dataLog);
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
@@ -79,13 +86,11 @@ class App extends Component<AppProps, AppState> {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (waterTempData.length > 100) {waterTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      waterTemp = dataLog.y;
       waterTempData.push(dataLog);
-      console.log('waterTemp ',dataLog);
+      console.log('waterTemp ', dataLog);
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
@@ -93,30 +98,33 @@ class App extends Component<AppProps, AppState> {
         x: data.newMeasurement.at,
         y: data.newMeasurement.value
       };
-      if (chartData.length > 100) {
-        chartData.shift();
-      }
+      if (oilTempData.length > 100) {oilTempData.shift();}
       
-      // currentTemp = dataLog.y;
+      oilTemp = dataLog.y;
       oilTempData.push(dataLog);
-      console.log('oilTemp ',dataLog);
+      console.log('oilTemp ', dataLog);
     };
    };
 
    handleFlareClick = () => {
-     console.log('flare clicked')
-     chartData = flareTempData;
+    //  chartData = flareTempData;
+    this.setState({chartData: flareTempData})
+    //  currentTemp = this.state.chartData[this.state.chartData.length-1].y
 
    };
 
    handleWaterClick = () => {
-     console.log('water clicked')
-     chartData = waterTempData;
+    //  chartData = waterTempData;
+    this.setState({chartData: waterTempData})
+    //  currentTemp = this.state.chartData[this.state.chartData.length-1].y
+
    };
 
    handleOilClick = () => {
-    console.log('oil clicked')
-    chartData = oilTempData;
+    // chartData = oilTempData;
+    this.setState({chartData: oilTempData})
+    // currentTemp = this.state.chartData[this.state.chartData.length-1].y
+
   };
   
 
@@ -153,11 +161,10 @@ render() {
                     return (
                       <div>
                       <h4>Current Temp:{currentTemp}</h4>
-                      <Chart chartArray={chartData.length > 3? chartData : []} dataKey="y" />                        
+                      <Chart chartArray={this.state.chartData.length > 3? this.state.chartData : []} dataKey="y" />                        
                       </div>
                     )
                     }}
-
                 </Subscription>
               </ChartCard>
             </Route>
