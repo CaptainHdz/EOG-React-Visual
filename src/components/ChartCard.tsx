@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: 'auto',
         marginTop: '2%',
         width: theme.spacing(140),
-        height: theme.spacing(70),
+        height: theme.spacing(75),
       },
     },
   }),
