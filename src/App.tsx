@@ -46,8 +46,18 @@ interface AppProps {
 
 
 interface AppState {
-  chartData: Array<object>,
-  waterData: Array<object>
+  oilData: Array<object>,
+  waterData: Array<object>,
+  flareData: Array<object>,
+  casingPressure: Array<object>,
+  tubingPressure: Array<object>,
+  IVOData: Array<object>,
+  ODShow: Boolean,
+  WDShow: Boolean,
+  FDShow: Boolean,
+  CPShow: Boolean,
+  TPShow: Boolean,
+  IVOShow: Boolean
 }
 
 let flareTemp = '';
@@ -57,101 +67,89 @@ let casingPressure = '';
 let tubingPressure = '';
 let InjValveOpen = '';
 
-const dataLogs = {
-  IVO: 0,
-  CP: 0,
-  TP: 0,
-  FT: 0,
-  WT: 0,
-  OT: 0
-};
-
-let counter = 0;
-
-
 class App extends Component<AppProps, AppState> {
 
   state = {
-    chartData: [] as any,
-    waterData: [] as any
+    oilData: [] as any,
+    waterData: [] as any,
+    flareData: [] as any,
+    casingPressure: [] as any,
+    tubingPressure: [] as any,
+    IVOData: [] as any,
+    ODShow: false,
+    WDShow: false,
+    FDShow: false,
+    CPShow: false,
+    TPShow: false,
+    IVOShow: false
   };
 
     
 
    dataSort = (data) => {
 
-    // if (this.state.chartData.length > 500) {this.state.chartData.shift()}
-
     if (data.newMeasurement.metric === 'injValveOpen') {
-      // console.log('IVO ', data.newMeasurement.value)
-      dataLogs.IVO = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
+      // console.log('injValveOpen ', data.newMeasurement.value);
+      const IVOLog = {injValveOpen: data.newMeasurement.value};
+      setTimeout(() => this.setState({IVOData: [...this.state.IVOData, IVOLog]}), 200);
     }
 
 
     if (data.newMeasurement.metric === 'casingPressure') {
-      // console.log('casingPressure ', data.newMeasurement.value)
-      dataLogs.CP = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
+      // console.log('casingPressure ', data.newMeasurement.value);
+      const CPLog = {casingPressure: data.newMeasurement.value};
+      setTimeout(() => this.setState({casingPressure: [...this.state.casingPressure, CPLog]}), 200);
     }
 
     if (data.newMeasurement.metric === 'tubingPressure') {
-      // console.log('tubingPressure', data.newMeasurement.value)
-      dataLogs.TP = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
-
+      // console.log('tubingPressure ', data.newMeasurement.value);
+      const TPLog = {tubingPressure: data.newMeasurement.value};
+      setTimeout(() => this.setState({tubingPressure: [...this.state.tubingPressure, TPLog]}), 200);
     }
 
     if (data.newMeasurement.metric === 'flareTemp') {
       // console.log('flareTemp ', data.newMeasurement.value);
-      dataLogs.FT = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
+      const flareLog = {flareTemp: data.newMeasurement.value};
+      setTimeout(() => this.setState({flareData: [...this.state.flareData, flareLog]}), 200);
     };
 
-
-    //THIS CODE WORKS DO NOT MESS WITH
     if (data.newMeasurement.metric === 'waterTemp') {
-      console.log('waterTemp ', data.newMeasurement.value);
-      const waterLog = {WaterTemp: data.newMeasurement.value};
-      setTimeout(() => this.setState({waterData: [...this.state.waterData, waterLog]}), 100);
+      // console.log('waterTemp ', data.newMeasurement.value);
+      const waterLog = {waterTemp: data.newMeasurement.value};
+      setTimeout(() => this.setState({waterData: [...this.state.waterData, waterLog]}), 200);
     };
-    ////////////////////////////////////////////////
 
     if (data.newMeasurement.metric === 'oilTemp') {
       // console.log('oilTemp ', data.newMeasurement.value);
-      dataLogs.OT = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
+      const oilLog = {oilTemp: data.newMeasurement.value};
+      setTimeout(() => this.setState({oilData: [...this.state.oilData, oilLog]}), 200);
     };
 
-  //   if (counter % 6 == 0) {
-  //     console.log(this.state.chartData)
-  //     console.log(dataLogs)
-  //     console.log(this.state.chartData)
-     //  setTimeout(() => this.setState({chartData: [...this.state.chartData, dataLogs]})
    };
 
    handleFlareClick = () => {
     // this.setState({chartData: flareTempData})
-    console.log('flare boi')
+    console.log('flare')
 
    };
 
    handleWaterClick = () => {
     // this.setState({chartData: waterTempData})
-    console.log('water boi')
+    console.log('water')
 
    };
 
    handleOilClick = () => {
     // this.setState({chartData: oilTempData})
-    console.log('oil boi')
+    console.log('oil')
 
   };
+
+  handleCasingClick = () => {}
+
+  handleIVOClick = () => {}
+
+  handleTubingClick = () => {}
   
 
   
@@ -173,9 +171,9 @@ render() {
               <GraphChip name='Flare Temp' handleChipClick={this.handleFlareClick} />
               <GraphChip name='Water Temp' handleChipClick={this.handleWaterClick} />
               <GraphChip name='Oil Temp' handleChipClick={this.handleOilClick} />
-              <GraphChip name='Casing Pressure' handleChipClick={this.handleOilClick} />
-              <GraphChip name='InjValve Open' handleChipClick={this.handleOilClick} />
-              <GraphChip name='Tubing Pressure' handleChipClick={this.handleOilClick} />
+              <GraphChip name='Casing Pressure' handleChipClick={this.handleCasingClick} />
+              <GraphChip name='InjValve Open' handleChipClick={this.handleIVOClick} />
+              <GraphChip name='Tubing Pressure' handleChipClick={this.handleTubingClick} />
 
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
@@ -193,6 +191,11 @@ render() {
                       {/* <h4>Current Temp:{currentTemp}</h4> */}
                       <Chart 
                       waterData={this.state.waterData}
+                      oilData={this.state.oilData}
+                      flareData={this.state.flareData}
+                      TPData={this.state.tubingPressure}
+                      CPData={this.state.casingPressure}
+                      IVOData={this.state.IVOData}
                        />                       
                       </div>
                     )

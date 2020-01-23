@@ -1,27 +1,22 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 
 
 export default (props) => {
     return (
         <div>
             <LineChart width={1000} height={550}>
-                <XAxis domain={['auto', 'auto']} />
-                <YAxis domain={[0, 100]} />
-                {/* <YAxis hide yAxisId='WT' dataKey='WT' /> */}
-                {/* <YAxis hide yAxisId='OT' dataKey='OT' /> */}
-                {/* <YAxis hide yAxisId='CP' dataKey='CP' /> */}
-                {/* <YAxis hide yAxisId='TP' dataKey='TP' /> */}
-                {/* <YAxis hide yAxisId='IVO' dataKey='IVO' /> */}
-
+                <XAxis domain={[0, 1000]} />
+                <YAxis domain={['auto', 1000]} />
+                <Legend />
                 <Tooltip />
-                <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                {/* <Line type="monotone" dataKey="IVO" stroke="#8884d8" isAnimationActive={false} /> */}
-                {/* <Line type="monotone"  dataKey="CP" stroke="#82ca9d" isAnimationActive={false} /> */}
-                {/* <Line type="monotone" dataKey="TP" stroke="#f2a353" isAnimationActive={false} /> */}
-                <Line data={props.waterData} type="monotoneX" dataKey="WaterTemp" stroke="#7ce348" isAnimationActive={false} />
-                {/* <Line type="monotone" dataKey="FT" stroke="#f42b3f" isAnimationActive={false} /> */}
-                {/* <Line type="monotone" dataKey="OT" stroke="#311eff" isAnimationActive={false} /> */}
+                {/* <CartesianGrid stroke="#ccc" strokeDasharray="5 5" /> */}
+                <Line dot={false} data={props.IVOData}  type="monotone" dataKey="injValveOpen" stroke="#E7E648" isAnimationActive={false} />
+                <Line dot={false} data={props.CPData} type="monotone"  dataKey="casingPressure" stroke="#82ca9d" isAnimationActive={false} />
+                <Line dot={false} data={props.TPData} type="monotone" dataKey="tubingPressure" stroke="#f2a353" isAnimationActive={false} />
+                <Line dot={false} data={props.waterData} type="monotone" dataKey="waterTemp" stroke="#7ce348" isAnimationActive={false} />
+                <Line dot={false} data={props.flareData} type="monotone" dataKey="flareTemp" stroke="#f42b3f" isAnimationActive={false} />
+                <Line dot={false} data={props.oilData} type="monotone" dataKey="oilTemp" stroke="#311eff" isAnimationActive={false} />
 
             </LineChart>
         </div>
