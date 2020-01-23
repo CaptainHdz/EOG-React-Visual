@@ -128,28 +128,37 @@ class App extends Component<AppProps, AppState> {
    };
 
    handleFlareClick = () => {
-    // this.setState({chartData: flareTempData})
+    this.setState({FDShow: !this.state.FDShow})
     console.log('flare')
 
    };
 
    handleWaterClick = () => {
-    // this.setState({chartData: waterTempData})
+    this.setState({WDShow: !this.state.WDShow})
     console.log('water')
 
    };
 
    handleOilClick = () => {
-    // this.setState({chartData: oilTempData})
+    this.setState({ODShow: !this.state.ODShow})
     console.log('oil')
 
   };
 
-  handleCasingClick = () => {}
+  handleCasingClick = () => {
+    this.setState({CPShow: !this.state.CPShow})
 
-  handleIVOClick = () => {}
+  }
 
-  handleTubingClick = () => {}
+  handleIVOClick = () => {
+    this.setState({IVOShow: !this.state.IVOShow})
+
+  }
+
+  handleTubingClick = () => {
+    this.setState({TPShow: !this.state.TPShow})
+
+  }
   
 
   
@@ -196,6 +205,15 @@ render() {
                       TPData={this.state.tubingPressure}
                       CPData={this.state.casingPressure}
                       IVOData={this.state.IVOData}
+
+                      //Show State
+                      IVOShow={this.state.IVOShow}
+                      CPShow={this.state.CPShow}
+                      TPShow={this.state.TPShow}
+                      WTShow={this.state.WDShow}
+                      FTShow={this.state.FDShow}
+                      OTShow={this.state.ODShow}
+
                        />                       
                       </div>
                     )
