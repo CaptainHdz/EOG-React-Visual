@@ -11,9 +11,10 @@ import NowWhat from './components/NowWhat';
 import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import GraphChip from './components/GraphChip';
+import ChartDataHook from './components/ChartDataHook';
 import { gql } from 'apollo-boost';
-
-import {Subscription} from '@apollo/react-components';
+import { useSubscription } from '@apollo/react-hooks';
+import { Subscription } from '@apollo/react-components';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const store = createStore();
@@ -48,100 +49,101 @@ interface AppState {
   chartData: Array<object>
 }
 
-const flareTempData = [] as any;
-const oilTempData = [] as any;
-const waterTempData = [] as any;
-
-
-let currentTemp = '';
 let flareTemp = '';
 let waterTemp = '';
 let oilTemp = '';
+let casingPressure = '';
+let tubingPressure = '';
+let InjValveOpen = '';
+
+const dataLogs = {
+  IVO: '',
+  CP: '',
+  TP: '',
+  FT: '',
+  WT: '',
+  OT: ''
+};
+
+let counter = 0;
 
 
 class App extends Component<AppProps, AppState> {
 
   state = {
     chartData: [] as any
-  }
+  };
+
+    
 
    dataSort = (data) => {
-    if (this.state.chartData.length > 100) {this.state.chartData.shift()}
+    if (counter % 6 == 0) {
+      console.log(dataLogs)
+       setTimeout(() => this.setState({chartData: [...this.state.chartData, dataLogs]}), 100) 
+      }
 
-    const dataLogs = {
-      IVO: '',
-      CP: '',
-      TP: '',
-      FT: '',
-      WT: '',
-      OT: ''
-    };
+    // if (this.state.chartData.length > 500) {this.state.chartData.shift()}
 
     if (data.newMeasurement.metric === 'injValveOpen') {
       console.log('IVO ', data.newMeasurement.value)
+      dataLogs.IVO = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
     }
 
 
     if (data.newMeasurement.metric === 'casingPressure') {
       console.log('casingPressure ', data.newMeasurement.value)
+      dataLogs.CP = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
     }
 
     if (data.newMeasurement.metric === 'tubingPressure') {
       console.log('tubingPressure', data.newMeasurement.value)
+      dataLogs.TP = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
+
     }
 
     if (data.newMeasurement.metric === 'flareTemp') {
-      // const dataLog = {
-      //   x: data.newMeasurement.at,
-      //   y: data.newMeasurement.value
-      // };
-      // if (flareTempData.length > 100) {flareTempData.shift();}
-      
-      // flareTemp = dataLog.y;
-      // flareTempData.push(dataLog);
       console.log('flareTemp ', data.newMeasurement.value);
+      dataLogs.FT = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
-      // const dataLog = {
-      //   x: data.newMeasurement.at,
-      //   y: data.newMeasurement.value
-      // };
-      // if (waterTempData.length > 100) {waterTempData.shift();}
-      
-      // waterTemp = dataLog.y;
-      // waterTempData.push(dataLog);
       console.log('waterTemp ', data.newMeasurement.value);
+      dataLogs.WT = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
-      // const dataLog = {
-      //   x: data.newMeasurement.at,
-      //   y: data.newMeasurement.value
-      // };
-      // if (oilTempData.length > 100) {oilTempData.shift();}
-      
-      // oilTemp = dataLog.y;
-      // oilTempData.push(dataLog);
       console.log('oilTemp ', data.newMeasurement.value);
+      dataLogs.OT = data.newMeasurement.value;
+      counter += 1
+      console.log(counter)
     };
    };
 
    handleFlareClick = () => {
-    this.setState({chartData: flareTempData})
-     currentTemp = flareTemp;
+    // this.setState({chartData: flareTempData})
+    console.log('flare boi')
 
    };
 
    handleWaterClick = () => {
-    this.setState({chartData: waterTempData})
-     currentTemp = waterTemp;
+    // this.setState({chartData: waterTempData})
+    console.log('water boi')
 
    };
 
    handleOilClick = () => {
-    this.setState({chartData: oilTempData})
-    currentTemp = oilTemp;
+    // this.setState({chartData: oilTempData})
+    console.log('oil boi')
 
   };
   
@@ -165,6 +167,10 @@ render() {
               <GraphChip name='Flare Temp' handleChipClick={this.handleFlareClick} />
               <GraphChip name='Water Temp' handleChipClick={this.handleWaterClick} />
               <GraphChip name='Oil Temp' handleChipClick={this.handleOilClick} />
+              <GraphChip name='Casing Pressure' handleChipClick={this.handleOilClick} />
+              <GraphChip name='InjValve Open' handleChipClick={this.handleOilClick} />
+              <GraphChip name='Tubing Pressure' handleChipClick={this.handleOilClick} />
+
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
                   {({data, error, loading}) => {
@@ -178,8 +184,8 @@ render() {
                     
                     return (
                       <div>
-                      <h4>Current Temp:{currentTemp}</h4>
-                      <Chart chartArray={this.state.chartData.length > 3? this.state.chartData : []} dataKey="y" />                        
+                      {/* <h4>Current Temp:{currentTemp}</h4> */}
+                      <Chart chartArray={this.state.chartData} />                       
                       </div>
                     )
                     }}
