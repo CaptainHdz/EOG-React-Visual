@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 
 export default (props) => {
@@ -10,7 +10,6 @@ export default (props) => {
                 <YAxis domain={['auto', 1000]} />
                 <Legend />
                 <Tooltip />
-                {/* <CartesianGrid stroke="#ccc" strokeDasharray="5 5" /> */}
                 {props.IVOShow && 
                 <Line dot={false} data={props.IVOData}  type="monotone" dataKey="injValveOpen" stroke="#E7E648" isAnimationActive={false} />
                 }

@@ -11,9 +11,7 @@ import NowWhat from './components/NowWhat';
 import Chart from './components/Chart';
 import ChartCard from './components/ChartCard';
 import GraphChip from './components/GraphChip';
-import ChartDataHook from './components/ChartDataHook';
 import { gql } from 'apollo-boost';
-import { useSubscription } from '@apollo/react-hooks';
 import { Subscription } from '@apollo/react-components';
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -190,8 +188,8 @@ render() {
                     
                     return (
                       <div>
-                      {/* <h4>Current Temp:{currentTemp}</h4> */}
                       <Chart 
+                      //Data
                       waterData={this.state.waterData}
                       oilData={this.state.oilData}
                       flareData={this.state.flareData}
