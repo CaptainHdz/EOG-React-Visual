@@ -89,75 +89,68 @@ class App extends Component<AppProps, AppState> {
    dataSort = (data) => {
 
     if (data.newMeasurement.metric === 'injValveOpen') {
-      // console.log('injValveOpen ', data.newMeasurement.value);
       const IVOLog = {injValveOpen: data.newMeasurement.value};
       setTimeout(() => this.setState({IVOData: [...this.state.IVOData, IVOLog]}), 200);
+      InjValveOpen = 'IVO Pressure: ' + data.newMeasurement.value
+
     }
 
 
     if (data.newMeasurement.metric === 'casingPressure') {
-      // console.log('casingPressure ', data.newMeasurement.value);
       const CPLog = {casingPressure: data.newMeasurement.value};
       setTimeout(() => this.setState({casingPressure: [...this.state.casingPressure, CPLog]}), 200);
+      casingPressure = 'Casing Pressure: ' + data.newMeasurement.value
+
     }
 
     if (data.newMeasurement.metric === 'tubingPressure') {
-      // console.log('tubingPressure ', data.newMeasurement.value);
       const TPLog = {tubingPressure: data.newMeasurement.value};
       setTimeout(() => this.setState({tubingPressure: [...this.state.tubingPressure, TPLog]}), 200);
+      tubingPressure = 'Tubing Pressure: ' + data.newMeasurement.value
     }
 
     if (data.newMeasurement.metric === 'flareTemp') {
-      // console.log('flareTemp ', data.newMeasurement.value);
       const flareLog = {flareTemp: data.newMeasurement.value};
       setTimeout(() => this.setState({flareData: [...this.state.flareData, flareLog]}), 200);
+      flareTemp = 'Flare Temp: ' + data.newMeasurement.value
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
-      // console.log('waterTemp ', data.newMeasurement.value);
       const waterLog = {waterTemp: data.newMeasurement.value};
       setTimeout(() => this.setState({waterData: [...this.state.waterData, waterLog]}), 200);
+      waterTemp = 'Water Temp: ' + data.newMeasurement.value
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
-      // console.log('oilTemp ', data.newMeasurement.value);
       const oilLog = {oilTemp: data.newMeasurement.value};
       setTimeout(() => this.setState({oilData: [...this.state.oilData, oilLog]}), 200);
+      oilTemp = 'Oil Temp: ' + data.newMeasurement.value
     };
 
    };
 
    handleFlareClick = () => {
     this.setState({FDShow: !this.state.FDShow})
-    console.log('flare')
-
    };
 
    handleWaterClick = () => {
     this.setState({WDShow: !this.state.WDShow})
-    console.log('water')
-
    };
 
    handleOilClick = () => {
     this.setState({ODShow: !this.state.ODShow})
-    console.log('oil')
-
   };
 
   handleCasingClick = () => {
     this.setState({CPShow: !this.state.CPShow})
-
   }
 
   handleIVOClick = () => {
     this.setState({IVOShow: !this.state.IVOShow})
-
   }
 
   handleTubingClick = () => {
     this.setState({TPShow: !this.state.TPShow})
-
   }
   
 
@@ -177,12 +170,12 @@ render() {
             </Route>
   
             <Route path='/charts' exact>
-              <GraphChip name='Flare Temp' handleChipClick={this.handleFlareClick} />
-              <GraphChip name='Water Temp' handleChipClick={this.handleWaterClick} />
-              <GraphChip name='Oil Temp' handleChipClick={this.handleOilClick} />
-              <GraphChip name='Casing Pressure' handleChipClick={this.handleCasingClick} />
-              <GraphChip name='InjValve Open' handleChipClick={this.handleIVOClick} />
-              <GraphChip name='Tubing Pressure' handleChipClick={this.handleTubingClick} />
+              <GraphChip name={flareTemp} handleChipClick={this.handleFlareClick} />
+              <GraphChip name={waterTemp} handleChipClick={this.handleWaterClick} />
+              <GraphChip name={oilTemp} handleChipClick={this.handleOilClick} />
+              <GraphChip name={casingPressure} handleChipClick={this.handleCasingClick} />
+              <GraphChip name={tubingPressure} handleChipClick={this.handleIVOClick} />
+              <GraphChip name={InjValveOpen} handleChipClick={this.handleTubingClick} />
 
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
