@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 export default (props) => {
     return (
         <div>
-            <LineChart width={1000} height={550} data={props.chartArray}>
+            <LineChart width={1000} height={550}>
                 <XAxis domain={['auto', 'auto']} />
                 <YAxis domain={[0, 100]} />
                 {/* <YAxis hide yAxisId='WT' dataKey='WT' /> */}
@@ -19,7 +19,7 @@ export default (props) => {
                 {/* <Line type="monotone" dataKey="IVO" stroke="#8884d8" isAnimationActive={false} /> */}
                 {/* <Line type="monotone"  dataKey="CP" stroke="#82ca9d" isAnimationActive={false} /> */}
                 {/* <Line type="monotone" dataKey="TP" stroke="#f2a353" isAnimationActive={false} /> */}
-                <Line type="monotone" dataKey="WT" stroke="#7ce348" isAnimationActive={false} />
+                <Line data={props.waterData} type="monotoneX" dataKey="WaterTemp" stroke="#7ce348" isAnimationActive={false} />
                 {/* <Line type="monotone" dataKey="FT" stroke="#f42b3f" isAnimationActive={false} /> */}
                 {/* <Line type="monotone" dataKey="OT" stroke="#311eff" isAnimationActive={false} /> */}
 

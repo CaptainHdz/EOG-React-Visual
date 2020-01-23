@@ -46,7 +46,8 @@ interface AppProps {
 
 
 interface AppState {
-  chartData: Array<object>
+  chartData: Array<object>,
+  waterData: Array<object>
 }
 
 let flareTemp = '';
@@ -57,12 +58,12 @@ let tubingPressure = '';
 let InjValveOpen = '';
 
 const dataLogs = {
-  IVO: '',
-  CP: '',
-  TP: '',
-  FT: '',
-  WT: '',
-  OT: ''
+  IVO: 0,
+  CP: 0,
+  TP: 0,
+  FT: 0,
+  WT: 0,
+  OT: 0
 };
 
 let counter = 0;
@@ -71,21 +72,18 @@ let counter = 0;
 class App extends Component<AppProps, AppState> {
 
   state = {
-    chartData: [] as any
+    chartData: [] as any,
+    waterData: [] as any
   };
 
     
 
    dataSort = (data) => {
-    if (counter % 6 == 0) {
-      console.log(dataLogs)
-       setTimeout(() => this.setState({chartData: [...this.state.chartData, dataLogs]}), 100) 
-      }
 
     // if (this.state.chartData.length > 500) {this.state.chartData.shift()}
 
     if (data.newMeasurement.metric === 'injValveOpen') {
-      console.log('IVO ', data.newMeasurement.value)
+      // console.log('IVO ', data.newMeasurement.value)
       dataLogs.IVO = data.newMeasurement.value;
       counter += 1
       console.log(counter)
@@ -93,14 +91,14 @@ class App extends Component<AppProps, AppState> {
 
 
     if (data.newMeasurement.metric === 'casingPressure') {
-      console.log('casingPressure ', data.newMeasurement.value)
+      // console.log('casingPressure ', data.newMeasurement.value)
       dataLogs.CP = data.newMeasurement.value;
       counter += 1
       console.log(counter)
     }
 
     if (data.newMeasurement.metric === 'tubingPressure') {
-      console.log('tubingPressure', data.newMeasurement.value)
+      // console.log('tubingPressure', data.newMeasurement.value)
       dataLogs.TP = data.newMeasurement.value;
       counter += 1
       console.log(counter)
@@ -108,25 +106,33 @@ class App extends Component<AppProps, AppState> {
     }
 
     if (data.newMeasurement.metric === 'flareTemp') {
-      console.log('flareTemp ', data.newMeasurement.value);
+      // console.log('flareTemp ', data.newMeasurement.value);
       dataLogs.FT = data.newMeasurement.value;
       counter += 1
       console.log(counter)
     };
 
+
+    //THIS CODE WORKS DO NOT MESS WITH
     if (data.newMeasurement.metric === 'waterTemp') {
       console.log('waterTemp ', data.newMeasurement.value);
-      dataLogs.WT = data.newMeasurement.value;
-      counter += 1
-      console.log(counter)
+      const waterLog = {WaterTemp: data.newMeasurement.value};
+      setTimeout(() => this.setState({waterData: [...this.state.waterData, waterLog]}), 100);
     };
+    ////////////////////////////////////////////////
 
     if (data.newMeasurement.metric === 'oilTemp') {
-      console.log('oilTemp ', data.newMeasurement.value);
+      // console.log('oilTemp ', data.newMeasurement.value);
       dataLogs.OT = data.newMeasurement.value;
       counter += 1
       console.log(counter)
     };
+
+  //   if (counter % 6 == 0) {
+  //     console.log(this.state.chartData)
+  //     console.log(dataLogs)
+  //     console.log(this.state.chartData)
+     //  setTimeout(() => this.setState({chartData: [...this.state.chartData, dataLogs]})
    };
 
    handleFlareClick = () => {
@@ -185,7 +191,9 @@ render() {
                     return (
                       <div>
                       {/* <h4>Current Temp:{currentTemp}</h4> */}
-                      <Chart chartArray={this.state.chartData} />                       
+                      <Chart 
+                      waterData={this.state.waterData}
+                       />                       
                       </div>
                     )
                     }}
