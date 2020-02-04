@@ -38,10 +38,6 @@ const GET_MEASUREMENTS = gql`subscription{newMeasurement{
 }
 }`;
 
-interface AppProps {
-  //code related to your props goes here
-}
-
 
 interface AppState {
   oilData: Array<object>,
@@ -65,7 +61,21 @@ let casingPressure = '';
 let tubingPressure = '';
 let InjValveOpen = '';
 
-class App extends Component<AppProps, AppState> {
+const IVOArr = [] as Array<object>;
+const TPArr = [] as Array<object>;
+const CPArr = [] as Array<object>;
+const FTArr = [] as Array<object>;
+const WTArr = [] as Array<object>;
+const OTArr = [] as Array<object>;
+
+let IVOCount = 0;
+let OilCount = 0;
+let waterCount = 0;
+let flareCount = 0;
+let CPCount = 0;
+let TPCount = 0;
+
+class App extends Component<AppState> {
 
   state = {
     oilData: [] as any,
@@ -87,41 +97,57 @@ class App extends Component<AppProps, AppState> {
    dataSort = (data) => {
 
     if (data.newMeasurement.metric === 'injValveOpen') {
-      const IVOLog = {injValveOpen: data.newMeasurement.value};
-      setTimeout(() => this.setState({IVOData: [...this.state.IVOData, IVOLog]}), 200);
+      const IVOLog = {injValveOpen: data.newMeasurement.value, x: IVOCount};
+      IVOCount ++
+      IVOArr.push(IVOLog)
+      if (IVOArr.length > 100) {IVOArr.shift()}
+      setTimeout(() => this.setState({IVOData: IVOArr}), 50)
       InjValveOpen = 'IVO Pressure: ' + data.newMeasurement.value
-
-    }
+    };
 
 
     if (data.newMeasurement.metric === 'casingPressure') {
-      const CPLog = {casingPressure: data.newMeasurement.value};
-      setTimeout(() => this.setState({casingPressure: [...this.state.casingPressure, CPLog]}), 200);
+      const CPLog = {casingPressure: data.newMeasurement.value, x: CPCount};
+      CPCount ++
+      CPArr.push(CPLog)
+      if (CPArr.length > 100) {CPArr.shift()}
+      setTimeout(() => this.setState({casingPressure: CPArr}), 50)
       casingPressure = 'Casing Pressure: ' + data.newMeasurement.value
-
-    }
+    };
 
     if (data.newMeasurement.metric === 'tubingPressure') {
-      const TPLog = {tubingPressure: data.newMeasurement.value};
-      setTimeout(() => this.setState({tubingPressure: [...this.state.tubingPressure, TPLog]}), 200);
+      const TPLog = {tubingPressure: data.newMeasurement.value, x: TPCount};
+      TPArr.push(TPLog)
+      TPCount ++
+      if (TPArr.length > 100) {TPArr.shift()}
+      setTimeout(() => this.setState({tubingPressure: TPArr}), 50)
       tubingPressure = 'Tubing Pressure: ' + data.newMeasurement.value
-    }
+    };
 
     if (data.newMeasurement.metric === 'flareTemp') {
-      const flareLog = {flareTemp: data.newMeasurement.value};
-      setTimeout(() => this.setState({flareData: [...this.state.flareData, flareLog]}), 200);
+      const flareLog = {flareTemp: data.newMeasurement.value, x: flareCount};
+      FTArr.push(flareLog)
+      flareCount ++
+      if (FTArr.length > 100) {FTArr.shift()}
+      setTimeout(() => this.setState({flareData: FTArr}), 50)
       flareTemp = 'Flare Temp: ' + data.newMeasurement.value
     };
 
     if (data.newMeasurement.metric === 'waterTemp') {
-      const waterLog = {waterTemp: data.newMeasurement.value};
-      setTimeout(() => this.setState({waterData: [...this.state.waterData, waterLog]}), 200);
+      const waterLog = {waterTemp: data.newMeasurement.value, x: waterCount};
+      WTArr.push(waterLog)
+      waterCount ++
+      if (WTArr.length > 100) {WTArr.shift()}
+      setTimeout(() => this.setState({waterData: WTArr}), 50)
       waterTemp = 'Water Temp: ' + data.newMeasurement.value
     };
 
     if (data.newMeasurement.metric === 'oilTemp') {
-      const oilLog = {oilTemp: data.newMeasurement.value};
-      setTimeout(() => this.setState({oilData: [...this.state.oilData, oilLog]}), 200);
+      const oilLog = {oilTemp: data.newMeasurement.value, x: OilCount};
+      OTArr.push(oilLog)
+      OilCount ++
+      if (OTArr.length > 100) {OTArr.shift()}
+      setTimeout(() => this.setState({oilData: OTArr}), 50)
       oilTemp = 'Oil Temp: ' + data.newMeasurement.value
     };
 
@@ -172,8 +198,8 @@ render() {
               <GraphChip name={waterTemp} handleChipClick={this.handleWaterClick} />
               <GraphChip name={oilTemp} handleChipClick={this.handleOilClick} />
               <GraphChip name={casingPressure} handleChipClick={this.handleCasingClick} />
-              <GraphChip name={tubingPressure} handleChipClick={this.handleIVOClick} />
-              <GraphChip name={InjValveOpen} handleChipClick={this.handleTubingClick} />
+              <GraphChip name={tubingPressure} handleChipClick={this.handleTubingClick} />
+              <GraphChip name={InjValveOpen} handleChipClick={this.handleIVOClick} />
 
               <ChartCard>
                 <Subscription subscription={GET_MEASUREMENTS}>
