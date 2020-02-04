@@ -26,7 +26,6 @@ export default (props) => {
   return (
     <Chip
         className={classes.chip}
-        // avatar={<Avatar>F</Avatar>}
         label={props.name}
         clickable
         color="primary"
