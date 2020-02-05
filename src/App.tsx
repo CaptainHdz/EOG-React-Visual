@@ -93,7 +93,8 @@ class App extends Component<AppState> {
   };
 
     
-
+//NOTE for EOG Resources: Flare temp subscription bugs out, sends a huge amount of data at a rate much faster than the other data
+//NOTE for EOG Resources: Oil temp subscription also bugs out and sends repetitive data in bursts at a faster rate
    dataSort = (data) => {
 
     if (data.newMeasurement.metric === 'injValveOpen') {
