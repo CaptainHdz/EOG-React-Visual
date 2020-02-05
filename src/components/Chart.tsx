@@ -3,7 +3,6 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 
 export default (props) => {
-    const array = [0, 20, 40, 60, 80, 100]
     return (
         <div>
             <LineChart width={1000} height={550}>
