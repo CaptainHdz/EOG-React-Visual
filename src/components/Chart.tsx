@@ -35,7 +35,7 @@ export default (props) => {
                 <YAxis yAxisId='WT' domain={['auto', 'auto']} />
                 }
                 {props.WTShow && 
-                <Line xAxisId='xAxis' yAxisId='WT' dot={false} data={props.waterData} type="monotone" dataKey="waterTemp" stroke="#7ce348" isAnimationActive={false} />      }
+                <Line xAxisId='xAxis' yAxisId='WT' dot={false} data={props.waterData} type="monotone" dataKey="waterTemp" stroke="#c21fdb" isAnimationActive={false} />      }
 
                 {props.FTShow &&
                 <YAxis yAxisId='FT' domain={['auto', 'auto']} />
