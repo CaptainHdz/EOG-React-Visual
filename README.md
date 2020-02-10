@@ -9,4 +9,4 @@ Read more about this assessment [here](https://react.eogresources.com)
 
 
 #### This is a chart with properly rendering data without the bug data.
-![This data works properly](./Assessment-BUG.PNG)]
+![This data works properly](./Assessment-BUG.PNG)
